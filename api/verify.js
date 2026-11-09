@@ -1,4 +1,5 @@
-// Vercel serverless funksiya: to'lov chekini Gemini va Upstash Redis orqali tekshiradi.
+const crypto = require('crypto');
+
 const PRICE = 10000;            // faqat shu summa qabul qilinadi (so'm)
 const CARD_LAST4 = '2486';      // karta oxirgi 4 raqami
 const NAME = /g.?aybullayev|og.?abek/i;
@@ -14,15 +15,41 @@ module.exports = async (req, res) => {
   if (!key) return res.status(500).json({ reason: 'Server sozlanmagan (GEMINI_API_KEY yoʻq).' });
 
   try {
-    const m = String(req.body && req.body.img || '').match(/^data:(image\/\w+);base64,(.+)$/);
-    if (!m) return res.status(400).json({ reason: 'Rasm notoʻgʻri.' });
+    const imgStr = String((req.body && req.body.img) || '');
+    const matchPos = imgStr.indexOf(';base64,');
+    if (!imgStr.startsWith('data:image/') || matchPos === -1) {
+      return res.status(400).json({ reason: 'Rasm notoʻgʻri.' });
+    }
 
+    const mimeType = imgStr.slice(5, matchPos);
+    const base64Data = imgStr.slice(matchPos + 8);
+
+    // 1. Rasm faylining unikal xeshini (barmoq izini) hisoblaymiz
+    const imgHash = crypto.createHash('sha256').update(base64Data).digest('hex');
+
+    const rawUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || '';
+    const rawToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || '';
+    const redisUrl = rawUrl.replace(/^["'\s]+|["'\s]+$/g, '');
+    const redisToken = rawToken.replace(/^["'\s]+|["'\s]+$/g, '');
+
+    // Agar aynan shu rasm fayli oldin yuklangan bo'lsa, AI ga yubormasdan darhol rad etamiz
+    if (redisUrl && redisToken) {
+      const imgCheck = await fetch(`${redisUrl}/get/img_${imgHash}`, {
+        headers: { Authorization: `Bearer ${redisToken}` }
+      });
+      const imgData = await imgCheck.json();
+      if (imgData && imgData.result) {
+        return res.json({ reason: 'Bu chek rasmi allaqachon ishlatilgan! Yangi toʻlov qiling.' });
+      }
+    }
+
+    // 2. Gemini AI orqali chekni tekshiramiz
     const model = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
     const r = await fetch(`https://googleapis.com{model}:generateContent`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: PROMPT }, { inline_data: { mime_type: m.at(1), data: m.at(2) } }] }],
+        contents: [{ parts: [{ text: PROMPT }, { inline_data: { mime_type: mimeType, data: base64Data } }] }],
         generationConfig: { temperature: 0, responseMimeType: 'application/json' }
       })
     });
@@ -33,7 +60,7 @@ module.exports = async (req, res) => {
     const rawText = (parts && parts.at(0) && parts.at(0).text) || '{}';
     const a = JSON.parse(String(rawText).replace(/```json|```/g, ''));
 
-    // 1. Asosiy tekshiruvlar
+    // 3. Chek ma'lumotlarini qat'iy tekshirish
     if (!a.is_receipt) return res.json({ reason: 'Bu toʻlov cheki emas. Toʻlov chekining rasmini yuklang.' });
     if (Number(a.amount) !== PRICE) return res.json({ reason: `Toʻlov summasi roppa-rosa ${PRICE.toLocaleString('ru-RU')} soʻm boʻlishi kerak.` });
     if (String(a.card_last4) !== CARD_LAST4 && !NAME.test(a.recipient || '')) return res.json({ reason: 'Toʻlov koʻrsatilgan kartaga qilinmagan.' });
@@ -42,18 +69,15 @@ module.exports = async (req, res) => {
     const d = Date.parse(a.date);
     if (d && Date.now() - d > 3 * 864e5) return res.json({ reason: 'Chek juda eski. Yangi toʻlov qiling.' });
 
-    // 2. Chek avval ishlatilganligini Redis bazadan tekshirish
-    const redisUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-    const redisToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
-
+    // 4. Chek ma'lumotlarini (tranzaksiya ID va vaqt) Redis bazada tekshirish va saqlash
     if (redisUrl && redisToken) {
       const uniqueSig = a.tx_id
-        ? `tx:${String(a.tx_id).trim().toLowerCase()}`
-        : `dt:${a.date || 'no-date'}_${a.time || 'no-time'}_${a.amount}_${a.card_last4 || ''}`;
+        ? `tx_${String(a.tx_id).trim().toLowerCase()}`
+        : `dt_${a.date || 'nodate'}_${a.time || 'notime'}_${a.amount}_${a.card_last4 || ''}`;
 
-      const redisKey = encodeURIComponent(`receipt:${uniqueSig}`);
+      const receiptKey = encodeURIComponent(`rcpt_${uniqueSig}`);
 
-      const checkRes = await fetch(`${redisUrl}/get/${redisKey}`, {
+      const checkRes = await fetch(`${redisUrl}/get/${receiptKey}`, {
         headers: { Authorization: `Bearer ${redisToken}` }
       });
       const checkData = await checkRes.json();
@@ -62,13 +86,19 @@ module.exports = async (req, res) => {
         return res.json({ reason: 'Bu toʻlov cheki allaqachon ishlatilgan! Yangi toʻlov qiling.' });
       }
 
-      await fetch(`${redisUrl}/set/${redisKey}/1?EX=2592000`, {
-        headers: { Authorization: `Bearer ${redisToken}` }
-      });
+      // Ikkalasini ham (ham rasm xeshini, ham chek ma'lumotini) 30 kunga bazaga yozib qo'yamiz
+      await Promise.all([
+        fetch(`${redisUrl}/set/img_${imgHash}/1?EX=2592000`, {
+          headers: { Authorization: `Bearer ${redisToken}` }
+        }),
+        fetch(`${redisUrl}/set/${receiptKey}/1?EX=2592000`, {
+          headers: { Authorization: `Bearer ${redisToken}` }
+        })
+      ]);
     }
 
     return res.json({ ok: true });
   } catch (e) {
-    return res.status(500).json({ reason: 'Tekshirishda xatolik. Qayta urinib koʻring.' });
+    return res.status(500).json({ reason: `Xatolik: ${e.message}` });
   }
 };
