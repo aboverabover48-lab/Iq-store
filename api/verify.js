@@ -38,7 +38,9 @@ module.exports = async (req, res) => {
     }
 
     const model = (process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite').trim();
-    const apiUrl = 'https://googleapis.com' + model + ':generateContent';
+    const host = 'generativelanguage.' + 'googleapis.com';
+    const path = '/v1beta/models/' + model + ':generateContent';
+    const apiUrl = 'https://' + host + path;
 
     const r = await fetch(apiUrl, {
       method: 'POST',
