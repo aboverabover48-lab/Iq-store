@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>IQ ARENA — Aql sinovi</title>
+<style>
+:root{--bg:#070914;--fg:#eef1ff;--mut:#9aa3c7;--card:rgba(255,255,255,.07);--bd:rgba(255,255,255,.15);--a:#7c5cff;--b:#00e0ff;--c:#ff4fd8;--gold:#f5c76a;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#eef1ff;--fg:#14183a;--mut:#555d86;--card:rgba(255,255,255,.75);--bd:rgba(20,24,58,.16);--gold:#b8860b;color-scheme:light}}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden}
+#bg{position:fixed;inset:0;z-index:0}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);opacity:.4;z-index:0;animation:fl 14s ease-in-out infinite alternate}
+.o1{width:46vmax;height:46vmax;background:var(--a);top:-15vmax;left:-12vmax}.o2{width:40vmax;height:40vmax;background:var(--b);bottom:-14vmax;right:-10vmax;animation-delay:-5s}.o3{width:28vmax;height:28vmax;background:var(--c);top:40%;left:50%;animation-delay:-9s;opacity:.22}
+@keyframes fl{to{transform:translate(6vmax,-5vmax) scale(1.2)}}
+#app{position:relative;z-index:2;max-width:720px;margin:0 auto;padding:18px 16px 40px;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
+.scr{animation:in .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes in{from{opacity:0;transform:translateY(30px) scale(.97);filter:blur(8px)}}
+.glass{background:var(--card);border:1px solid var(--bd);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:26px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+h1{font-size:clamp(2.6rem,11vw,4.6rem);line-height:1;margin:.2em 0;text-align:center;letter-spacing:-.03em;background:linear-gradient(90deg,var(--b),var(--a),var(--c),var(--b));background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gs 6s linear infinite}
+@keyframes gs{to{background-position:300% 0}}
+.sub{text-align:center;color:var(--mut)}
+.brain{font-size:5rem;text-align:center;animation:pu 2.4s ease-in-out infinite;filter:drop-shadow(0 0 30px var(--a))}
+@keyframes pu{50%{transform:scale(1.12) rotate(-4deg)}}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:16px 0}
+.chip{padding:6px 12px;border-radius:99px;border:1px solid var(--bd);background:var(--card);font-size:.82rem}
+.btn{display:block;width:100%;margin-top:18px;padding:16px;border:0;border-radius:18px;font-family:inherit;font-weight:700;font-size:1.1rem;color:#fff;cursor:pointer;background:linear-gradient(110deg,var(--a),var(--c),var(--b),var(--a));background-size:300% 100%;animation:gs 5s linear infinite;box-shadow:0 10px 40px rgba(124,92,255,.45);transition:transform .2s}
+.btn:active{transform:scale(.97)}
+input{width:100%;padding:14px 16px;border-radius:14px;border:1px solid var(--bd);background:var(--card);color:var(--fg);font-size:1rem;outline:0;margin:6px 0 14px}
+input:focus{border-color:var(--b);box-shadow:0 0 0 3px rgba(0,224,255,.2)}
+label{font-size:.85rem;color:var(--mut)}
+.gd{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+.gc{padding:18px 8px;text-align:center;border-radius:18px;border:1px solid var(--bd);background:var(--card);cursor:pointer;color:var(--fg);font-family:inherit;font-weight:600;font-size:1rem;transition:.25s}
+.gc.on{border-color:var(--b);background:rgba(0,224,255,.16);transform:scale(1.04);box-shadow:0 0 30px rgba(0,224,255,.3)}
+.gc span{display:block;font-size:2.2rem}
+.shake{animation:sk .4s}@keyframes sk{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:.9rem;gap:8px}
+.lv{color:var(--gold);letter-spacing:2px}
+.bar,.tm{height:6px;border-radius:9px;background:var(--bd);overflow:hidden;margin-bottom:10px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--b),var(--c));transition:width .8s}
+.tm i{display:block;height:100%;width:100%;background:var(--gold)}
+.qc h2{font-size:1.3rem;line-height:1.35;margin:.2em 0 .6em}
+.qc svg{display:block;margin:10px auto;max-width:260px;width:80%;color:var(--b)}
+.opt{display:flex;align-items:center;gap:12px;width:100%;margin-top:10px;padding:14px;border-radius:16px;border:1px solid var(--bd);background:var(--card);color:var(--fg);font-family:inherit;font-weight:500;font-size:1.05rem;text-align:left;cursor:pointer;animation:in .5s var(--dl) backwards;transition:.2s}
+.opt b{width:34px;height:34px;flex:none;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,var(--a),var(--b));color:#fff}
+.opt:hover{border-color:var(--b)}
+.opt.sel{background:rgba(124,92,255,.35);border-color:var(--a);transform:scale(1.02)}
+.modal{position:fixed;inset:0;z-index:9;display:grid;place-items:center;padding:20px;background:rgba(5,6,18,.72);backdrop-filter:blur(8px);animation:fd .3s}
+@keyframes fd{from{opacity:0}}
+.mb{max-width:420px;text-align:center;animation:pop .6s cubic-bezier(.2,1.4,.3,1)}
+@keyframes pop{from{transform:scale(.6) rotate(-6deg);opacity:0}}
+.em{font-size:4rem;animation:pu 1.2s infinite}
+.iq{font-size:clamp(5rem,26vw,9rem);font-weight:900;text-align:center;line-height:1;background:linear-gradient(180deg,var(--gold),var(--c));-webkit-background-clip:text;background-clip:text;color:transparent}
+.cb{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:.85rem}.cb span{width:120px;flex:none}.cb u{flex:1;height:8px;background:var(--bd);border-radius:9px;overflow:hidden;text-decoration:none}.cb u i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--b),var(--a));transition:width 1.4s .5s}
+.ci{width:100%;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+#cf{position:fixed;inset:0;z-index:8;pointer-events:none}
+.scan{height:6px;border-radius:9px;margin:22px 0;background:linear-gradient(90deg,transparent,var(--b),transparent) no-repeat;background-size:50% 100%;animation:sc 1.1s linear infinite}
+@keyframes sc{from{background-position:-50% 0}to{background-position:150% 0}}
+.cd{font-size:9rem;font-weight:900;text-align:center;animation:pop .8s both}
+small{color:var(--mut)}
+.lk{position:relative;border-radius:26px;overflow:hidden;margin-top:6px}
+.bl{filter:blur(70px) saturate(.3) brightness(.85);opacity:.7;transform:scale(1.15);-webkit-user-select:none;user-select:none;pointer-events:none;-webkit-touch-callout:none}
+.lo{position:absolute;inset:0;display:grid;place-items:center;align-content:center;text-align:center;z-index:3;background:rgba(7,9,20,.3);font-weight:800;font-size:1.3rem}
+.lo span{font-size:3rem;animation:pu 2s infinite}
+.cardx{position:relative;border-radius:22px;padding:22px 20px;margin:14px 0;color:#fff;background:linear-gradient(135deg,#1b2a6b,#7c5cff 55%,#ff4fd8);box-shadow:0 20px 50px rgba(124,92,255,.45);overflow:hidden}
+.cardx:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.25) 50%,transparent 70%);background-size:250% 100%;animation:shn 3.5s infinite}
+@keyframes shn{from{background-position:150% 0}to{background-position:-100% 0}}
+.cn{font:800 clamp(1.4rem,7.2vw,2.5rem)/1.2 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.05em;margin:14px 0 10px;text-shadow:0 2px 10px rgba(0,0,0,.3)}
+.big{padding:16px;border-radius:18px;border:1px solid var(--b);background:rgba(0,224,255,.1);font-weight:700;font-size:1.15rem;text-align:center;line-height:1.4;margin:12px 0}
+.drop{display:block;padding:22px;border:2px dashed var(--bd);border-radius:18px;text-align:center;cursor:pointer;color:var(--mut)}
+.drop:hover{border-color:var(--b)}
+.drop img{max-width:100%;max-height:220px;border-radius:12px;margin:10px auto 0}
+.bm{filter:blur(5px);-webkit-user-select:none;user-select:none;pointer-events:none;-webkit-touch-callout:none}
+.btn:disabled{opacity:.5;filter:grayscale(.5);cursor:not-allowed}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important}}
+</style><meta name="description" content="IQ ARENA — mantiq, raqam va fazoviy tafakkur sinovi"><meta name="theme-color" content="#070914"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E🧠%3C/text%3E%3C/svg%3E"></head><body>
+<canvas id="bg"></canvas><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><canvas id="cf"></canvas>
+<main id="app"></main><div id="md"></div>
+<script>
+const $=s=>document.querySelector(s),app=$('#app');
+let rnd=Math.random,S={};
+const mb=s=>()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+const ri=(a,b)=>a+Math.floor(rnd()*(b-a+1)),pk=a=>a[ri(0,a.length-1)];
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=ri(0,i);[a[i],a[j]]=[a[j],a[i]]}return a};
+function mkO(ans,c,f=x=>x,mx=1e9){const s=new Set(),w=[];for(const x of sh(c)){if(x!==ans&&!s.has(x)&&x>0&&x<=mx){s.add(x);w.push(x)}if(w.length==3)break}let k=1;while(w.length<3){const x=ans+(k%2?(k+1)/2:-k/2);k++;if(!s.has(x)&&x!==ans&&x>0&&x<=mx){s.add(x);w.push(x)}}const o=sh([ans,...w]);return{o:o.map(f),a:o.indexOf(ans)}}
+const CAT={seq:"Raqamli mantiq",mat:"Fazoviy tasavvur",verb:"Verbal va mantiq",odd:"Tahlil",let:"Naqsh topish"};
+const L="ABCDEFGHIJKLMNOPQRSTUVWXYZ",PR=[2,3,5,7,11,13,17,19,23,29,31,37,41,43,47];
+function gSeq(d){const t=d<.2?0:d<.4?1:d<.6?2:d<.8?3:4;let a=[],k;
+if(t==0){const s=ri(2,9),b=ri(1,20);for(k=0;k<7;k++)a.push(b+s*k)}
+else if(t==1){if(rnd()<.5){const r=ri(2,3),b=ri(1,4);for(k=0;k<7;k++)a.push(b*r**k)}else{const s=ri(1,3);a=[ri(1,10)];for(k=0;k<6;k++)a.push(a[k]+s+k)}}
+else if(t==2){const s=ri(2,6),u=ri(2,5),b=ri(1,10),c=ri(30,50);for(k=0;k<7;k++)a.push(k%2?c-u*(k-1)/2:b+s*k/2)}
+else if(t==3){const r=rnd();if(r<.4){const m=ri(2,3),c=pk([-1,1,2]);a=[ri(1,4)];for(k=0;k<6;k++)a.push(a[k]*m+c)}else if(r<.7){const n=ri(1,6),c=ri(-3,5);for(k=0;k<7;k++)a.push((n+k)**2+c)}else{const n=ri(1,3);for(k=0;k<7;k++)a.push((n+k)**3)}}
+else{const r=rnd();if(r<.35){a=[ri(1,4),ri(2,6)];for(k=0;k<5;k++)a.push(a[k]+a[k+1])}else if(r<.7){const s=ri(2,6);a=[ri(1,5)];for(k=0;k<6;k++)a.push(k%2?a[k]*2:a[k]+s)}else{const st=ri(0,7);for(k=0;k<7;k++)a.push(PR[st+k]*2+1)}}
+const n=a[6];return{q:"Qatorni davom ettiring: "+a.slice(0,6).join(", ")+", ?",...mkO(n,[n+1,n-1,n+2,n-2,2*a[5]-a[4],a[5]+a[4],n+ri(3,9),n-ri(3,9)])}}
+function gLet(d){let n,s;if(d<.5){s=ri(1,3);const b=ri(0,25-5*s);s=[0,1,2,3,4].map(k=>b+s*k).concat(b+5*s);s=[s.slice(0,5),s[5]];n=s[1];return{q:"Harflar qatorini davom ettiring: "+s[0].map(x=>L[x]).join(" – ")+" – ?",...mkO(n+1,[n,n+2,n+3,n-1,n+4],x=>L[x-1],26)}}
+const a0=ri(0,12),b0=ri(0,12),p=ri(1,3),q=ri(1,3);n=b0+2*q;return{q:"Ikki qatlamli naqsh: "+[a0,b0,a0+p,b0+q,a0+2*p].map(x=>L[x]).join(" – ")+" – ?",...mkO(n+1,[n,n+2,n+3,n-1,a0+3*p+1],x=>L[x-1],26)}}
+function gOdd(d){let g,o;do{if(d<.3){const m=ri(3,9);g=[1,2,3].map(()=>m*ri(1,12));o=m*ri(1,12)+ri(1,m-1)}else if(d<.55){g=sh([4,5,6,7,8,9,10,11,12,13,14]).slice(0,3).map(x=>x*x);const k=ri(5,12);o=k*k+ri(1,3)}else if(d<.8){g=sh(PR).slice(0,3);o=pk([9,15,21,25,27,33,35,39,49])}else{const F=[2,3,5,8,13,21,34,55];g=sh(F).slice(0,3);o=pk([4,9,15,19,25,40])}
+}while(new Set([...g,o]).size<4);const all=sh([...g,o]);return{q:"Qaysi son qolganlaridan mantiqan farq qiladi?",o:all,a:all.indexOf(o)}}
+function dots(n,x,y){let s='';for(let k=0;k<n;k++)s+=`<circle cx="${x+18+(k%3)*27}" cy="${y+18+Math.floor(k/3)*27}" r="9" fill="currentColor"/>`;return s}
+function gMat(d){const R=d<.35?'add':d<.6?pk(['add','sub']):d<.8?pk(['sub','dbl']):pk(['mul','dbl']),rows=[],seen=new Set();
+const row=()=>{let c1,c2,c3;if(R=='add'){c1=ri(1,4);c2=ri(1,4);c3=c1+c2}else if(R=='sub'){c1=ri(3,9);c2=ri(1,c1-1);c3=c1-c2}else if(R=='dbl'){c1=ri(1,3);c2=ri(1,3);c3=c1+2*c2}else{c1=ri(1,3);c2=ri(1,3);c3=c1*c2}return[c1,c2,c3]};
+for(let i=0;i<3;i++){let r,n=0;do{r=row()}while(seen.has(r[0]+'_'+r[1])&&++n<12);seen.add(r[0]+'_'+r[1]);rows.push(r)}
+let s='<svg viewBox="0 0 270 270"><rect x="1" y="1" width="268" height="268" rx="14" fill="none" stroke="var(--bd)" stroke-width="2"/><path d="M90 0V270M180 0V270M0 90H270M0 180H270" stroke="var(--bd)" stroke-width="2"/>';
+rows.forEach((r,i)=>r.forEach((v,j)=>{s+=i==2&&j==2?'<text x="135" y="235" text-anchor="middle" font-size="54" font-weight="800" fill="var(--gold)">?</text>':dots(v,j*90,i*90)}));
+const n=rows[2][2],[c1,c2]=rows[2];return{q:"Qoida har bir qatorda bir xil. Savol belgisi oʻrniga nechta nuqta boʻlishi kerak?",s:s+'</svg>',...mkO(n,[n+1,n-1,c1+c2,c1,c2,n+2,c1*c2],x=>x,9)}}
+function gMat2(d){const K=d<.25?['add','grid','lat']:d<.5?['add','sub','lat','grid']:d<.75?['sub','dbl','lat','mul']:['dbl','mul','lat','grid','dual','dual'],R=pk(K);
+const bm=(R,mx)=>{let M=[],seen=new Set(),h=mx>4?4:2;
+if(R=='lat'){const v=sh([1,2,3,4,5,6,7,8,9].filter(x=>x<=mx)).slice(0,3),f=rnd()<.5;for(let i=0;i<3;i++)M.push([0,1,2].map(c=>v[(f?c+i:c+2*i)%3]));return M}
+if(R=='grid'){let a,p,q;do{a=ri(1,2);p=ri(0,2);q=ri(1,2)}while(a+2*p+2*q>mx);for(let r=0;r<3;r++)M.push([0,1,2].map(c=>a+r*p+c*q));return M}
+for(let i=0;i<3;i++){let r,n=0;do{let c1,c2,c3;if(R=='add'){c1=ri(1,h);c2=ri(1,h);c3=c1+c2}else if(R=='sub'){c1=ri(3,mx);c2=ri(1,c1-1);c3=c1-c2}else if(R=='dbl'){c1=ri(1,3);c2=ri(1,3);c3=c1+2*c2}else{c1=ri(1,3);c2=ri(1,3);c3=c1*c2}r=[c1,c2,c3]}while(seen.has(r[0]+'_'+r[1])&&++n<12);seen.add(r[0]+'_'+r[1]);M.push(r)}
+return rnd()<.4?M[0].map((_,c)=>M.map(r=>r[c])):M};
+let s='<svg viewBox="0 0 270 270"><rect x="1" y="1" width="268" height="268" rx="14" fill="none" stroke="var(--bd)" stroke-width="2"/><path d="M90 0V270M180 0V270M0 90H270M0 180H270" stroke="var(--bd)" stroke-width="2"/>';
+const Q='?',qm='<text x="225" y="235" text-anchor="middle" font-size="54" font-weight="800" fill="var(--gold)">?</text>';
+if(R=='dual'){const A=bm(pk(['add','sub','lat']),4),B=bm(pk(['add','sub','lat','grid']),4);
+for(let i=0;i<3;i++)for(let j=0;j<3;j++){if(i==2&&j==2){s+=qm;continue}let x=j*90,y=i*90;for(let k=0;k<A[i][j];k++)s+=`<circle cx="${x+14+k*20}" cy="${y+25}" r="7" fill="currentColor"/>`;for(let k=0;k<B[i][j];k++)s+=`<rect x="${x+8+k*20}" y="${y+50}" width="16" height="16" rx="3" fill="var(--c)"/>`}
+const a=A[2][2],b=B[2][2],f=(x,y)=>x+' ● · '+y+' ■',set=new Set([f(a,b)]),w=[];
+for(const[x,y]of sh([[a,b+1],[a+1,b],[b,a],[a-1,b],[a,b-1],[a+1,b+1],[a-1,b-1]])){const k=f(x,y);if(x>0&&y>0&&x<=4&&y<=4&&!set.has(k)){set.add(k);w.push(k)}if(w.length==3)break}
+while(w.length<3){const k=f(ri(1,4),ri(1,4));if(!set.has(k)){set.add(k);w.push(k)}}
+const o=sh([f(a,b),...w]);return{q:"Ikki xil shakl, ikki xil qoida. Savol belgisi oʻrniga nima boʻlishi kerak?",s:s+'</svg>',o,a:o.indexOf(f(a,b))}}
+const M=bm(R,9);for(let i=0;i<3;i++)for(let j=0;j<3;j++)s+=i==2&&j==2?qm:dots(M[i][j],j*90,i*90);
+const n=M[2][2];return{q:"Qonuniyatni toping. Savol belgisi oʻrniga nechta nuqta boʻlishi kerak?",s:s+'</svg>',...mkO(n,[n+1,n-1,n+2,M[2][0],M[2][1],M[2][0]+M[2][1],M[1][2]],x=>x,9)}}
+const P=[[.05,"Dushanba, Chorshanba, Juma, …?","Yakshanba","Shanba","Payshanba","Seshanba"],[.08,"A > B, B > C, C > D. Qaysi biri eng kichik?","D","A","B","C"],[.12,"Qush : Uchish = Baliq : ?","Suzish","Yurish","Uxlash","Sakrash"],[.15,"Poyezd soatiga 60 km yuradi. 45 daqiqada necha km yuradi?","45 km","40 km","50 km","60 km"],[.18,"Dengiz : Baliq = Choʻl : ?","Tuya","Daryo","Oʻrmon","Muz"],[.2,"Shifokor : Bemor = Oʻqituvchi : ?","Oʻquvchi","Maktab","Kitob","Direktor"],[.25,"Qaysi soʻz ortiqcha: Olma, Nok, Uzum, Sabzi?","Sabzi","Olma","Nok","Uzum"],[.3,"Yanvar, Mart, May, …?","Iyul","Iyun","Aprel","Avgust"],[.35,"Kubning nechta qirrasi bor?","12","6","8","10"],[.4,"Bir sonning 20% i 30 ga teng. Shu sonning 50% i nechaga teng?","75","60","90","150"],[.45,"5 ta ishchi 5 ta stulni 5 soatda yasaydi. 100 ishchi 100 ta stulni necha soatda yasaydi?","5 soat","100 soat","20 soat","1 soat"],[.5,"1 dan 100 gacha butun sonlar yigʻindisi nechaga teng?","5050","5000","5100","4950"],[.55,"Qalam va oʻchirgich birga 1100 soʻm. Qalam oʻchirgichdan 1000 soʻm qimmat. Oʻchirgich necha soʻm?","50 soʻm","100 soʻm","150 soʻm","10 soʻm"],[.6,"Barcha gullar oʻsimlik. Atirgul — gul. Demak:","Atirgul — oʻsimlik","Barcha oʻsimliklar — gul","Atirgul oʻsimlik emas","Gullar — atirgul"],[.65,"Koʻlda nilufar har kuni 2 baravar koʻpayadi va 48 kunda koʻlni toʻliq qoplaydi. Yarmini necha kunda qoplagan?","47","24","46","40"],[.72,"Ali Validan 2 yosh katta. 5 yildan keyin ularning yoshlari yigʻindisi 30 boʻladi. Ali hozir necha yoshda?","11","9","12","10"],[.78,"Ikki ota va ikki oʻgʻil baliq tutdi: jami 3 ta baliq, hamma bittadan oldi. Qanday?","Ular bobo, ota va oʻgʻil","Biri olmagan","Baliq boʻlingan","Savol xato"],[.85,"Soat 3:15 da soat va minut milliari orasidagi burchak necha gradus?","7,5°","0°","15°","30°"],[.93,"Uch quti yorligʻi: “Olma”, “Nok”, “Aralash” — barchasi XATO. “Aralash” qutidan olma chiqdi. Bu qutida nima bor?","Faqat olma","Faqat nok","Aralash","Aniqlab boʻlmaydi"]];
+function gVerb(d){const p=P.map(x=>[Math.abs(x[0]-d)+rnd()*.1,x]).sort((a,b)=>a[0]-b[0])[0][1],o=sh(p.slice(2));return{q:p[1],o,a:o.indexOf(p[2])}}
+const TY=['mat','seq','mat','verb','mat','odd','mat','let','mat','seq','mat','verb','mat','odd','mat','let','mat','seq','mat','verb'],GF={seq:gSeq,mat:gMat2,verb:gVerb,odd:gOdd,let:gLet};
+function gen(i){rnd=mb(i*7919+13);const t=TY[i%20],q=GF[t](i/1999);q.t=t;q.d=i/1999;return q}
+function build(){const T=[],seen=new Set();for(let k=0;k<20;k++){let i=Math.min(1999,Math.max(0,Math.round(k*1999/19)+Math.floor(Math.random()*61)-30)),q,n=0;do{q=gen(i);i=(i+20)%2000}while(seen.has(q.q+(q.s||''))&&++n<20);seen.add(q.q+(q.s||''));T.push(q)}rnd=Math.random;return T}
+const show=h=>{app.innerHTML=`<section class="scr">${h}</section>`;scrollTo(0,0)};
+function intro(){show(`<div class="brain">🧠</div><h1>IQ ARENA</h1><p class="sub">Mantiq, raqam va fazoviy tafakkurni oʻlchaydigan zamonaviy aql sinovi</p><div class="chips"><span class="chip">📚 2000+ savollik baza</span><span class="chip">🎯 20 ta savol</span><span class="chip">🧩 Mantiq va fazoviy tafakkur</span></div><div class="glass"><p style="margin:0">Savollar osondan qiyinga boradi, har biriga vaqt beriladi. Yoʻlda sizni kichik syurprizlar kutadi ✨</p></div><button class="btn" id="go">Boshlash →</button>`);$('#go').onclick=form}
+function form(){show(`<h1 style="font-size:2.2rem">Keling, tanishamiz</h1><div class="glass" id="fm"><label>Ismingiz</label><input id="nm" maxlength="30" placeholder="Masalan: Aziza" autocomplete="given-name"><label>Yoshingiz</label><input id="ag" type="number" inputmode="numeric" placeholder="Masalan: 15"><label>Jinsingiz</label><div class="gd"><button class="gc" data-g="Oʻgʻil bola"><span>👦</span>Oʻgʻil bola</button><button class="gc" data-g="Qiz bola"><span>👧</span>Qiz bola</button></div></div><button class="btn" id="go">Davom etish</button>`);
+let g='';document.querySelectorAll('.gc').forEach(b=>b.onclick=()=>{document.querySelectorAll('.gc').forEach(x=>x.classList.remove('on'));b.classList.add('on');g=b.dataset.g});
+$('#go').onclick=()=>{const n=$('#nm').value.trim(),a=+$('#ag').value;if(n.length<2||!(a>=6&&a<=99)||!g){const f=$('#fm');f.classList.remove('shake');void f.offsetWidth;f.classList.add('shake');return}S={name:n,age:a,g,T:build(),i:0,sc:0,W:0,ok:0,c:{},t0:Date.now()};cd()}}
+function cd(){let n=3;const r=()=>{show(`<div class="cd">${n||'🚀'}</div><p class="sub" style="text-align:center">Tayyor boʻling, ${S.name}!</p>`);if(n--<0)return showQ();setTimeout(r,800)};r()}
+function showQ(){const q=S.T[S.i],n=S.i+1,lim=Math.round(35+45*q.d),f=1+Math.floor(q.d*4.99);S.on=1;S.lock=0;
+show(`<div class="top"><span>Savol <b>${n}</b>/20</span><span class="chip">${CAT[q.t]}</span><span class="lv">${'●'.repeat(f)}${'○'.repeat(5-f)}</span></div><div class="bar"><i id="pb" style="width:${(n-1)/20*100}%"></i></div><div class="tm"><i id="tm"></i></div><div class="glass qc"><h2>${q.q}</h2>${q.s||''}<div>${q.o.map((o,j)=>`<button class="opt" data-j="${j}" style="--dl:${j*70}ms"><b>${'ABCD'[j]}</b><span>${o}</span></button>`).join('')}</div></div>`);
+requestAnimationFrame(()=>requestAnimationFrame(()=>{$('#pb').style.width=n/20*100+'%';const t=$('#tm');t.style.transition=`width ${lim}s linear`;t.style.width='0'}));
+document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(+b.dataset.j,b));S.tid=setTimeout(()=>pick(-1),lim*1000)}
+function pick(j,b){if(S.lock)return;S.lock=1;clearTimeout(S.tid);const q=S.T[S.i],w=1+2*q.d,ok=j===q.a;S.W+=w;if(ok){S.sc+=w;S.ok++}const c=S.c[q.t]||(S.c[q.t]=[0,0]);c[1]++;if(ok)c[0]++;if(b)b.classList.add('sel');setTimeout(()=>{S.i++;if(S.i>=20){S.on=0;calc()}else if(S.i==8||S.i==15){S.on=0;motiv()}else showQ()},400)}
+addEventListener('keydown',e=>{const j='abcd1234'.indexOf(e.key.toLowerCase());if(j>=0&&S.on&&!S.lock)pick(j%4,document.querySelectorAll('.opt')[j%4])});
+const MO=[[["🔥","Ajoyib boshlanish, NN!","Birinchi 8 ta savol ortda. Bundan keyin savollar sezilarli qiyinlashadi — diqqat va sabr sizning kuchingiz."],["⚡","Yaxshi ketyapsiz, NN!","Siz hozir toʻgʻri yoʻldasiz. Shoshilmang, har bir savolga xotirjam yondashing."]],[["🚀","Yoʻlning 3/4 qismi tugadi!","Eng qiyin savollar oldinda, NN. Aynan shu yergacha kelish ham katta natija — davom eting!"],["💎","Siz juda yaxshi ketyapsiz!","Oxirgi 5 ta savol — eng murakkabi. Yuqori ballar shu yerda hal boʻladi."]]];
+const FK=["Inson miyasida taxminan 86 milliard neyron bor.","Miya tanamiz vazniga nisbatan kichik, lekin energiyaning taxminan 20% ini sarflaydi.","Uyqu xotirani mustahkamlaydi — yaxshi uxlash aqlni charxlaydi.","Yangi narsa oʻrganish miyada yangi aloqalar hosil qiladi."];
+function motiv(){const m=pk(MO[S.i==8?0:1]);$('#md').innerHTML=`<div class="modal"><div class="glass mb"><div class="em">${m[0]}</div><h2>${m[1].replace('NN',S.name)}</h2><p>${m[2].replace('NN',S.name)}</p><p><small>💡 ${pk(FK)}</small></p><p>Bajarildi: <b>${S.i}/20</b></p><button class="btn" id="nx" style="margin-top:8px">Davom etamiz →</button></div></div>`;$('#nx').onclick=()=>{$('#md').innerHTML='';showQ()}}
+function calc(){const st=["Javoblar tahlil qilinmoqda…","Qiyinlik darajasi hisobga olinmoqda…","Yosh koʻrsatkichi moslanmoqda…","Yakuniy IQ hisoblanmoqda…"];show(`<div class="brain">🧠</div><h1 style="font-size:2rem">Natija tayyorlanmoqda</h1><div class="scan"></div><p class="sub" id="st"></p>`);let k=0;const t=setInterval(()=>{$('#st').textContent=st[k++];if(k>3){clearInterval(t);setTimeout(res,900)}},800)}
+const erf=x=>{const t=1/(1+.3275911*Math.abs(x)),y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-.284496736)*t+.254829592)*t*Math.exp(-x*x);return x>=0?y:-y};
+const PAY={card:"9860 1201 1408 2486",name:"Gʻaybullayev Ogʻabek",price:"10 000 soʻm",verify:"/api/verify"};
+const shrink=f=>new Promise((ok,no)=>{const im=new Image();im.onload=()=>{const k=Math.min(1,1400/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);ok(c.toDataURL('image/jpeg',.85))};im.onerror=no;im.src=URL.createObjectURL(f)});
+async function verifyReceipt(f){if(!PAY.verify){await new Promise(r=>setTimeout(r,2400));return{pending:1}}
+try{const img=await shrink(f);const r=await fetch(PAY.verify,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({img})});return await r.json()}catch(e){return{reason:'Aloqa xatosi. Qayta urinib koʻring.'}}}
+function res(){const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),fi=R(96,148);let F=null;
+show(`<p class="sub" style="margin:0">${S.name}, natijangiz tayyor!</p>
+<div class="lk" oncontextmenu="return false"><div class="bl" aria-hidden="true"><div class="iq">${fi}</div><svg viewBox="0 0 240 140" style="width:100%;max-width:320px;display:block;margin:0 auto"><path d="M20 120A100 100 0 0 1 220 120" fill="none" stroke="var(--bd)" stroke-width="14" stroke-linecap="round"/><path d="M20 120A100 100 0 0 1 220 120" fill="none" stroke="var(--a)" stroke-width="14" stroke-linecap="round" stroke-dasharray="315" stroke-dashoffset="${315*(1-(fi-70)/90)}"/></svg><h1 style="font-size:2rem">Ustun intellekt</h1><div class="chips"><span class="chip">🌍 Eng yuqori ${R(2,40)}% qatorida</span><span class="chip">✅ ${R(9,20)}/20 toʻgʻri</span></div><div class="glass">${['Raqamli mantiq','Fazoviy tasavvur','Verbal va mantiq'].map(k=>`<div class="cb"><span>${k}</span><u><i style="width:${R(40,95)}%"></i></u><b>${R(2,6)}/${R(6,8)}</b></div>`).join('')}</div></div><div class="lo"><div><span>🔒</span><br>Natija yopiq</div></div></div><div class="lk" style="margin-top:16px" oncontextmenu="return false"><img class="ci bm" draggable="false" src="${cert(S.name,'???','• • •')}" alt=""><div class="lo" style="background:none;font-size:1rem"><div class="chip" style="background:rgba(7,9,20,.72);color:#fff">🎓 Sertifikat beriladi</div></div></div>
+<div class="glass" style="margin-top:16px"><h2 style="margin:0 0 6px">🔓 Natijani ochish</h2><div class="big">⚡ Chekni yuborishingiz bilan avtomatik AI tomonidan tekshiriladi va soniyalar ichida javobni koʻrasiz</div>
+<p style="margin:12px 0 0"><b>1.</b> Quyidagi kartaga <b>${PAY.price}</b> toʻlov qiling</p>
+<div class="cardx"><small style="opacity:.8">KARTA RAQAMI</small><div class="cn">${PAY.card}</div><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><span>${PAY.name}</span>${PAY.price?`<b>${PAY.price}</b>`:''}</div></div>
+<button class="chip" id="cp" style="cursor:pointer;color:var(--fg);font-family:inherit">📋 Karta raqamini nusxalash</button>
+<p><b>2.</b> Toʻlov chekining rasmini yuklang</p>
+<label class="drop" id="dz"><input type="file" accept="image/*" id="fl" hidden><span id="dt">📎 Chek rasmini tanlang yoki shu yerga tashlang</span><img id="pv" style="display:none" alt=""></label>
+<button class="btn" id="sd" disabled>Chekni yuborish ✨</button><div id="vs" style="text-align:center;margin-top:10px"></div></div>`);
+const fl=$('#fl'),pv=$('#pv'),sd=$('#sd'),dz=$('#dz');
+const take=f=>{if(!f)return;if(!f.type.startsWith('image/')){$('#vs').textContent='Faqat rasm (screenshot) yuklang.';return}if(f.size>8e6){$('#vs').textContent='Rasm 8 MB dan oshmasin.';return}F=f;$('#vs').textContent='';pv.src=URL.createObjectURL(f);pv.style.display='block';$('#dt').textContent='✅ '+f.name;sd.disabled=false};
+fl.onchange=()=>take(fl.files[0]);dz.ondragover=e=>e.preventDefault();dz.ondrop=e=>{e.preventDefault();take(e.dataTransfer.files[0])};
+$('#cp').onclick=async()=>{try{await navigator.clipboard.writeText(PAY.card.replace(/ /g,''));$('#cp').textContent='✅ Nusxalandi'}catch(e){$('#cp').textContent='Qoʻlda koʻchiring'}};
+sd.onclick=async()=>{if(!F)return;sd.disabled=true;const st=['Rasm oʻqilmoqda…','Karta va ism solishtirilmoqda…','Summa va sana tekshirilmoqda…'];$('#vs').innerHTML='<div class="scan"></div><p class="sub" id="vt">'+st[0]+'</p>';let k=0;const t=setInterval(()=>{const e=$('#vt');if(e)e.textContent=st[++k%3]},700);const r=await verifyReceipt(F);clearInterval(t);if(r.ok)return real();
+$('#vs').innerHTML=r.pending?'<p>⏳ Tekshiruv xizmati hozircha ulanmagan. Tez orada ishga tushadi.</p>':'<p>❌ '+(r.reason||'Chek tasdiqlanmadi.')+'</p>';sd.disabled=false}}
+function real(){let s=S.sc/S.W;s=Math.min(1,s*(1+Math.max(0,14-S.age)*.012));const iq=Math.max(70,Math.min(160,Math.round(70+90*Math.pow(s,1.5)))),top=(1-.5*(1+erf((iq-100)/15/Math.SQRT2)))*100,
+rk=iq<85?"Rivojlanuvchi aql":iq<100?"Mutanosib aql":iq<115?"Oʻrtachadan yuqori":iq<130?"Yuqori intellekt":iq<145?"Ustun intellekt":iq<150?"Daho darajasiga yaqin":"Nodir daho",
+tp=top<.1?"0,1% dan kam":top.toFixed(top<10?1:0).replace('.',',')+"%",mins=Math.max(1,Math.round((Date.now()-S.t0)/60000));
+S.iq=iq;
+show(`<p class="sub" style="margin:0">Tabriklaymiz, ${S.name}!</p><div class="iq" id="iq">0</div><svg viewBox="0 0 240 140" style="width:100%;max-width:320px;display:block;margin:0 auto"><defs><linearGradient id="gg"><stop offset="0" stop-color="#00e0ff"/><stop offset=".6" stop-color="#7c5cff"/><stop offset="1" stop-color="#ff4fd8"/></linearGradient></defs><path d="M20 120A100 100 0 0 1 220 120" fill="none" stroke="var(--bd)" stroke-width="14" stroke-linecap="round"/><path id="ga" d="M20 120A100 100 0 0 1 220 120" fill="none" stroke="url(#gg)" stroke-width="14" stroke-linecap="round" stroke-dasharray="315" stroke-dashoffset="315" style="transition:stroke-dashoffset 2.2s cubic-bezier(.2,.8,.2,1)"/></svg>
+<h1 style="font-size:2rem">${rk}</h1><div class="chips"><span class="chip">🌍 Eng yuqori ${tp} qatorida</span><span class="chip">✅ ${S.ok}/20 toʻgʻri</span><span class="chip">⏱ ${mins} daqiqa</span></div>
+<div class="glass">${Object.keys(S.c).map(k=>{const c=S.c[k];return`<div class="cb"><span>${CAT[k]}</span><u><i data-w="${Math.round(c[0]/c[1]*100)}"></i></u><b>${c[0]}/${c[1]}</b></div>`}).join('')}</div>
+
+<div class="glass" style="margin-top:16px;text-align:center"><h2 style="margin-top:0">🎓 Sizning sertifikatingiz</h2><img class="ci" id="ci" alt="Sertifikat"><a class="btn" id="dl" download="IQ-sertifikat.png" style="text-decoration:none;text-align:center">⬇ Sertifikatni yuklab olish</a><p><small>Telefonda yuklanmasa, rasmni uzoq bosib turib saqlang.</small></p></div><button class="btn" id="rt">↻ Qayta topshirish</button><p class="sub"><small>Bu test koʻngilochar va taxminiy; rasmiy klinik tashxis oʻrnini bosmaydi.</small></p>`);
+$('#rt').onclick=intro;const t0=performance.now(),el=$('#iq');(function f(t){const p=Math.min(1,(t-t0)/2200);el.textContent=Math.round(iq*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)})(t0);
+setTimeout(()=>{$('#ga').style.strokeDashoffset=315*(1-(iq-70)/90);document.querySelectorAll('.cb i').forEach(i=>i.style.width=i.dataset.w+'%')},100);
+const cu=cert(S.name,iq,rk);$('#ci').src=cu;$('#dl').href=cu;if(iq>=130)setTimeout(conf,1200)}
+function cert(name,iq,rk){const c=document.createElement('canvas');c.width=1600;c.height=1130;const x=c.getContext('2d'),W=1600,H=1130,G='#f5c76a';
+let g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#0b1030');g.addColorStop(1,'#241247');x.fillStyle=g;x.fillRect(0,0,W,H);
+x.strokeStyle='rgba(245,199,106,.09)';x.lineWidth=2;for(let i=0;i<46;i++){x.beginPath();x.ellipse(W/2,H/2,120+i*17,60+i*11,i*.07,0,7);x.stroke()}
+g=x.createLinearGradient(0,0,W,0);g.addColorStop(0,'#b8860b');g.addColorStop(.5,'#ffe9a8');g.addColorStop(1,'#b8860b');x.strokeStyle=g;x.lineWidth=10;x.strokeRect(40,40,W-80,H-80);x.lineWidth=3;x.strokeRect(65,65,W-130,H-130);
+[[65,65],[W-65,65],[65,H-65],[W-65,H-65]].forEach(p=>{x.fillStyle=G;x.beginPath();x.arc(p[0],p[1],16,0,7);x.fill()});
+x.textAlign='center';x.fillStyle=G;x.font='600 34px Georgia,serif';x.fillText('I Q   A R E N A',W/2,170);
+x.font='bold 120px Georgia,serif';x.fillStyle=g;x.fillText('SERTIFIKAT',W/2,300);
+x.fillStyle='#c9cff5';x.font='italic 34px Georgia,serif';x.fillText('Ushbu sertifikat quyidagi shaxsga taqdim etiladi',W/2,385);
+let fs=110;x.font=`italic ${fs}px Georgia,serif`;while(x.measureText(name).width>1200&&fs>40){fs-=6;x.font=`italic ${fs}px Georgia,serif`}x.fillStyle='#fff';x.fillText(name,W/2,520);x.fillStyle=g;x.fillRect(W/2-420,550,840,4);
+x.fillStyle='#c9cff5';x.font='32px Georgia,serif';x.fillText('aql-zakovat sinovini muvaffaqiyatli topshirgani va quyidagi natijani qayd etgani uchun',W/2,615);
+x.beginPath();x.arc(W/2,810,130,0,7);x.fillStyle=g;x.fill();x.beginPath();x.arc(W/2,810,112,0,7);x.fillStyle='#14183a';x.fill();
+x.fillStyle=G;x.font='bold 30px Georgia,serif';x.fillText('IQ',W/2,765);x.fillStyle='#fff';x.font='bold 100px Georgia,serif';x.fillText(iq,W/2,855);
+x.fillStyle=G;x.font='italic 40px Georgia,serif';x.fillText(rk,W/2,1005);
+const d=new Date(),id='IQ-'+Math.random().toString(36).slice(2,10).toUpperCase();x.fillStyle='#c9cff5';x.font='26px Georgia,serif';x.textAlign='left';x.fillText('Sana: '+String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+d.getFullYear(),130,1020);x.textAlign='right';x.fillText('№ '+id,W-130,1020);
+x.textAlign='center';x.font='20px Georgia,serif';x.fillStyle='#8a92c0';x.fillText('Koʻngilochar va taxminiy baholash testi natijasi',W/2,1070);return c.toDataURL('image/png')}
+function conf(){const c=$('#cf'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;const A=Array.from({length:150},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*.6,v:2+Math.random()*4,r:4+Math.random()*6,h:Math.random()*360,s:Math.random()*6}));let f=0;(function l(){x.clearRect(0,0,c.width,c.height);A.forEach(p=>{p.y+=p.v;p.x+=Math.sin(p.s+=.05)*2;x.fillStyle=`hsl(${p.h},90%,60%)`;x.fillRect(p.x,p.y,p.r,p.r*1.6)});if(++f<260)requestAnimationFrame(l);else x.clearRect(0,0,c.width,c.height)})()}
+(function(){const c=$('#bg'),x=c.getContext('2d');let W,H,P=[],m={x:-999,y:-999};function rs(){W=c.width=innerWidth;H=c.height=innerHeight;P=Array.from({length:Math.min(70,Math.floor(W*H/18000))},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5}))}
+addEventListener('resize',rs);addEventListener('pointermove',e=>{m.x=e.clientX;m.y=e.clientY});rs();
+(function f(){x.clearRect(0,0,W,H);for(const p of P){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;const dx=m.x-p.x,dy=m.y-p.y;if(Math.hypot(dx,dy)<160){p.x+=dx*.004;p.y+=dy*.004}x.fillStyle='rgba(0,224,255,.8)';x.beginPath();x.arc(p.x,p.y,1.8,0,7);x.fill()}
+for(let i=0;i<P.length;i++)for(let j=i+1;j<P.length;j++){const d=Math.hypot(P[i].x-P[j].x,P[i].y-P[j].y);if(d<130){x.strokeStyle=`rgba(124,92,255,${.35*(1-d/130)})`;x.beginPath();x.moveTo(P[i].x,P[i].y);x.lineTo(P[j].x,P[j].y);x.stroke()}}requestAnimationFrame(f)})()})();
+intro();
+</script></body></html>
