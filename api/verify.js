@@ -46,14 +46,12 @@ module.exports = async (req, res) => {
     const redisToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
 
     if (redisUrl && redisToken) {
-      // Chekning unikal izini shakllantiramiz (tranzaksiya raqami yoki sana+vaqt+summa)
       const uniqueSig = a.tx_id
         ? `tx:${String(a.tx_id).trim().toLowerCase()}`
         : `dt:${a.date || 'no-date'}_${a.time || 'no-time'}_${a.amount}_${a.card_last4 || ''}`;
 
       const redisKey = encodeURIComponent(`receipt:${uniqueSig}`);
 
-      // Bazada bor-yo'qligini tekshiramiz
       const checkRes = await fetch(`${redisUrl}/get/${redisKey}`, {
         headers: { Authorization: `Bearer ${redisToken}` }
       });
@@ -63,7 +61,6 @@ module.exports = async (req, res) => {
         return res.json({ reason: 'Bu toʻlov cheki allaqachon ishlatilgan! Yangi toʻlov qiling.' });
       }
 
-      // Yangi chekni bazaga 30 kunga (2592000 soniya) saqlab qo'yamiz
       await fetch(`${redisUrl}/set/${redisKey}/1?EX=2592000`, {
         headers: { Authorization: `Bearer ${redisToken}` }
       });
