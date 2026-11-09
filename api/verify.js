@@ -22,15 +22,16 @@ module.exports = async (req, res) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: PROMPT }, { inline_data: { mime_type: m[1], data: m[2] } }] }],
+        contents: [{ parts: [{ text: PROMPT }, { inline_data: { mime_type: m.at(1), data: m.at(2) } }] }],
         generationConfig: { temperature: 0, responseMimeType: 'application/json' }
       })
     });
 
     if (!r.ok) return res.status(502).json({ reason: 'AI xizmati javob bermadi. Birozdan soʻng qayta urinib koʻring.' });
     const j = await r.json();
-    const txt = (((j.candidates || [])[0] || {}).content || {}).parts;
-    const a = JSON.parse(String((txt && txt[0] && txt[0].text) || '{}').replace(/```json|```/g, ''));
+    const parts = (((j.candidates || []).at(0) || {}).content || {}).parts;
+    const rawText = (parts && parts.at(0) && parts.at(0).text) || '{}';
+    const a = JSON.parse(String(rawText).replace(/```json|```/g, ''));
 
     // 1. Asosiy tekshiruvlar
     if (!a.is_receipt) return res.json({ reason: 'Bu toʻlov cheki emas. Toʻlov chekining rasmini yuklang.' });
